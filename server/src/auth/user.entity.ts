@@ -8,7 +8,7 @@ import {
   BaseEntity,
 } from 'typeorm';
 import { Food } from 'src/food/food.entity';
-
+import * as bcrypt from 'bcrypt';
 @Entity()
 @Unique(['username'])
 export class User extends BaseEntity {
@@ -18,6 +18,8 @@ export class User extends BaseEntity {
   username: string;
   @Column()
   password: string;
+  @Column()
+  salt: string;
   @Column({ default: null })
   phone: string | null;
   @Column({ default: null })
@@ -26,10 +28,15 @@ export class User extends BaseEntity {
   latitude: number | null;
   @Column({ default: null })
   longitude: number | null;
+
   @OneToMany(
     type => Food,
     food => food.owner,
     { eager: true },
   )
   food: Food[];
+  async validatePassword(password: string): Promise<boolean> {
+    const hash = await bcrypt.hash(password, this.salt);
+    return hash === this.password;
+  }
 }

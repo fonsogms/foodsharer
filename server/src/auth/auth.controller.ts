@@ -6,7 +6,15 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private authService: AuthService) {}
   @Post('/signUp')
-  async singUp(@Body(ValidationPipe) userAuthDto: UserAuthDto) {
+  async singUp(
+    @Body(ValidationPipe) userAuthDto: UserAuthDto,
+  ): Promise<string> {
     return this.authService.signUp(userAuthDto);
+  }
+  @Post('/signIn')
+  async signIn(
+    @Body(ValidationPipe) userAuthDto: UserAuthDto,
+  ): Promise<{ token: string }> {
+    return this.authService.signIn(userAuthDto);
   }
 }
