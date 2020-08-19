@@ -1,8 +1,11 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import axios from "axios";
 function App() {
+  axios.get("/api/food/test").then((res) => {
+    console.log(res);
+  });
   return (
     <div className="App">
       <header className="App-header">
