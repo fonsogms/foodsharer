@@ -1,6 +1,5 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import axios from "axios";
-import { register } from "../../../serviceWorker";
 
 const SingUp = () => {
   interface RegisterDto {

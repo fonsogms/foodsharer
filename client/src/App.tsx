@@ -1,7 +1,8 @@
 import React from "react";
 import "./App.css";
-import axios from "axios";
-import SignUp from "./components/auth/Registration/SingUp";
+import SignUp from "./components/auth/SingUp";
+import { Route } from "react-router-dom";
+import Login from "./components/auth/Login";
 function App() {
   /*   axios.get("/api/food/test").then((res) => {
     console.log(res);
@@ -9,7 +10,20 @@ function App() {
  */
   return (
     <div className="App">
-      <SignUp></SignUp>
+      <Route
+        exact
+        path="/singUp"
+        render={(props) => {
+          return <SignUp {...props}></SignUp>;
+        }}
+      />
+      <Route
+        exact
+        path="/login"
+        render={(props) => {
+          return <Login {...props}></Login>;
+        }}
+      />
     </div>
   );
 }
