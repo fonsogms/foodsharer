@@ -1,6 +1,6 @@
 import React, { useState, SyntheticEvent } from "react";
 import axios from "axios";
-const Login = () => {
+const Login = (props) => {
   interface LoginDto {
     username: string;
     password: string;
@@ -21,7 +21,7 @@ const Login = () => {
 
     try {
       const { data } = await axios.post<string>("/api/auth/signIn", signIn);
-      console.log(data);
+      props.history.push("/home");
     } catch (error) {
       console.log(error.response.data);
       setErrorMessage(error.response.data.message);
