@@ -20,7 +20,10 @@ const Login = (props) => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post<string>("/api/auth/signIn", signIn);
+      await axios.post<string>(
+        process.env.REACT_APP_DOMAIN + "/api/auth/signIn",
+        signIn
+      );
       props.history.push("/home");
     } catch (error) {
       console.log(error.response.data);

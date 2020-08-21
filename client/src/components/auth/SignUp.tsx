@@ -1,4 +1,4 @@
-import React, { useState, useEffect, SyntheticEvent } from "react";
+import React, { useState, SyntheticEvent } from "react";
 import axios from "axios";
 
 const SingUp = () => {
@@ -24,7 +24,10 @@ const SingUp = () => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post<string>("/api/auth/signUp", signUp);
+      await axios.post<string>(
+        process.env.REACT_APP_DOMAIN + "/api/auth/signUp",
+        signUp
+      );
     } catch (error) {
       console.log(error.response.data);
       setErrorMessage(error.response.data.message);

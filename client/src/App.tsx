@@ -5,6 +5,7 @@ import { Route } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Home from "./components/Home/Home";
 function App() {
+  console.log(process.env);
   return (
     <div className="App">
       <Route
