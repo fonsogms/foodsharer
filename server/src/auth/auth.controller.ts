@@ -5,6 +5,9 @@ import {
   Body,
   ValidationPipe,
   UseGuards,
+  Req,
+  Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UserAuthDto } from './dto/userAuth.dto';
 import { AuthService } from './auth.service';
@@ -18,15 +21,19 @@ export class AuthController {
   @Post('/signUp')
   async singUp(
     @Body(ValidationPipe) userAuthDto: UserAuthDto,
-  ): Promise<string> {
+  ): Promise<{ token: string }> {
     return this.authService.signUp(userAuthDto);
   }
   @Post('/signIn')
   async signIn(
     @Body(ValidationPipe) userAuthDto: UserAuthDto,
-    @GetUser() user: User,
-  ): Promise<{ token: string }> {
-    console.log(user);
-    return this.authService.signIn(userAuthDto);
+    @Res() res: any,
+  ): Promise<void> {
+    this.authService.signIn(userAuthDto, res);
+  }
+  @Post('/loggedin')
+  async loggedIn(@Req() req: any, @Res() res: any) {
+    let token = req.cookies.jid;
+    await this.authService.loggedIn(token, req, res);
   }
 }

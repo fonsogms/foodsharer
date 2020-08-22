@@ -12,13 +12,47 @@ export class AuthService {
     @InjectRepository(UserRepository) private userRepository: UserRepository,
     private readonly jwtService: JwtService,
   ) {}
-  async signUp(userAuthDto: UserAuthDto): Promise<string> {
-    return await this.userRepository.signUp(userAuthDto);
-  }
-  async signIn(userAuthDto: UserAuthDto): Promise<{ token: string }> {
-    const user = await this.userRepository.validateUserPassword(userAuthDto);
+  async signUp(userAuthDto: UserAuthDto): Promise<{ token: string }> {
+    const user = await this.userRepository.signUp(userAuthDto);
     const payload: JwtPayload = { username: user };
     const token = this.jwtService.sign(payload);
     return { token };
+  }
+  async signIn(userAuthDto: UserAuthDto, res: any): Promise<void> {
+    const user = await this.userRepository.validateUserPassword(userAuthDto);
+    const payload: JwtPayload = { username: user };
+    const token = this.jwtService.sign(payload);
+    res.cookie('jid', token, {
+      httpOnly: true,
+      path: '/api/auth/loggedin',
+    });
+    console.log(token);
+    res.json({ token });
+  }
+  async loggedIn(token, req, res) {
+    if (!token) {
+      console.log('whats going on?');
+      throw new UnauthorizedException();
+    }
+
+    let payload = null;
+    try {
+      payload = await this.jwtService.verify(token);
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+    const { username } = payload;
+    const user = await this.userRepository.findOne({ username });
+    if (!user) {
+      throw new Error('user not found');
+    }
+
+    token = this.jwtService.sign({ username: user });
+    res.cookie('jid', token, {
+      httpOnly: true,
+      path: '/api/auth/loggedin',
+    });
+    res.json({ token });
   }
 }

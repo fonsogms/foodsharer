@@ -1,7 +1,7 @@
 import { Controller, UseGuards, Get } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-@Controller('/food')
+@Controller('api/food')
 @UseGuards(AuthGuard())
 export class FoodController {
   @Get('/test')
