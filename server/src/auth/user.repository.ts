@@ -19,7 +19,10 @@ export class UserRepository extends Repository<User> {
     user.salt = salt;
     console.log(user, 'this is the user');
     try {
+      console.log('happening?');
       await user.save();
+      console.log('happening?');
+
       return username;
     } catch (error) {
       if (error.code === '23505') {

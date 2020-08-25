@@ -42,13 +42,16 @@ export class AuthService {
       console.log(err);
       throw err;
     }
+    console.log(payload);
     const { username } = payload;
-    const user = await this.userRepository.findOne({ username });
+    console.log(username);
+    const user = await this.userRepository.findOne({ username: username });
+    console.log(user);
     if (!user) {
       throw new Error('user not found');
     }
 
-    token = this.jwtService.sign({ username: user });
+    token = this.jwtService.sign({ username: user.username });
     res.cookie('jid', token, {
       httpOnly: true,
       path: '/api/auth/loggedin',
