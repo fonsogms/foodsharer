@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from "react";
 
+interface LatLong {
+  coords: {
+    latitude: number;
+    longitude: number;
+  };
+}
+
 const Home = () => {
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState<LatLong>({
+    coords: {
+      latitude: 0,
+      longitude: 0,
+    },
+  });
   useEffect(() => {
     try {
       navigator.geolocation.getCurrentPosition((position) => {

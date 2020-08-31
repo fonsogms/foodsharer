@@ -8,13 +8,13 @@ const SingUp = (props) => {
     password: string;
   }
 
-  const [registerDto, setRegisterDto] = useState<RegisterDto | undefined>({
+  const [registerDto, setRegisterDto] = useState<RegisterDto>({
     username: "",
     password: "",
   });
   const [errorMessage, setErrorMessage]: [string[], Function] = useState([""]);
 
-  const handleChange = (e: SyntheticEvent): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setRegisterDto({ ...registerDto, [name]: value });
   };
@@ -31,7 +31,7 @@ const SingUp = (props) => {
         token: string;
       }>(process.env.REACT_APP_DOMAIN + "/api/auth/signUp", signUp);
       setToken(token);
-      props.history.push("/");
+      props.history.push("/home");
     } catch (error) {
       console.log(error.response.data.message);
       let newErrorMessage: string[] = [""];
@@ -43,17 +43,20 @@ const SingUp = (props) => {
       setErrorMessage(newErrorMessage);
     }
   };
-  console.log(errorMessage);
+  // console.log(errorMessage);
   return (
     <div>
       <h1>Please Sign Up</h1>
       <form action="">
+        <label htmlFor="username">Username</label>
         <input
           type="text"
           onChange={handleChange}
+          id="username"
           name="username"
           value={registerDto.username}
         />
+        <label htmlFor="password">Password</label>
         <input
           type="password"
           onChange={handleChange}

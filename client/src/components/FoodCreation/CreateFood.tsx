@@ -1,4 +1,10 @@
-import React, { useState, useEffect, SyntheticEvent } from "react";
+import React, {
+  useState,
+  useEffect,
+  ChangeEvent,
+  MouseEvent,
+  FormEvent,
+} from "react";
 import Address from "./Address";
 import FileUpload from "./FileUpload";
 import axios from "axios";
@@ -18,7 +24,7 @@ const CreateFood = (props) => {
     pictures: Pictures[];
   }
 
-  const [foodDto, setFoodDto]: [FoodDto, Function] = useState({
+  const [foodDto, setFoodDto] = useState<FoodDto>({
     title: "",
     description: "",
     latitude: 0,
@@ -27,10 +33,10 @@ const CreateFood = (props) => {
     expiryDate: "",
     pictures: [],
   });
-  const [errorMessage, setErrorMessage]: [string[], Function] = useState([""]);
+  const [errorMessage, setErrorMessage] = useState<string[]>([""]);
 
-  const [isUploaded, setIsUploaded]: [Boolean, Function] = useState(false);
-  const handleChange = (e: SyntheticEvent): void => {
+  const [isUploaded, setIsUploaded] = useState<Boolean>(false);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setFoodDto({ ...foodDto, [name]: value });
   };
@@ -59,7 +65,7 @@ const CreateFood = (props) => {
     }
   }, [foodDto, isUploaded, props]);
 
-  const handleSubmit = async (e: SyntheticEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const token = `Bearer ${getToken()}`;
     try {
@@ -89,7 +95,7 @@ const CreateFood = (props) => {
 
   return (
     <div>
-      <form action="">
+      <form onSubmit={handleSubmit}>
         <div>
           <div>
             {errorMessage[0] &&
@@ -113,7 +119,7 @@ const CreateFood = (props) => {
             <input
               type="text"
               name="description"
-              onChange={handleChange}
+              onChange={(e) => handleChange(e)}
               value={foodDto.description}
             />
           </div>
@@ -133,7 +139,7 @@ const CreateFood = (props) => {
         <Address foodDto={foodDto} setFoodDto={setFoodDto}></Address>
         <FileUpload setFoodDto={setFoodDto} foodDto={foodDto}></FileUpload>
 
-        <button onClick={handleSubmit}>Add food</button>
+        <button type="submit">Add food</button>
       </form>
     </div>
   );

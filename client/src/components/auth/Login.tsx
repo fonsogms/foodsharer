@@ -1,4 +1,4 @@
-import React, { useState, SyntheticEvent } from "react";
+import React, { useState, SyntheticEvent, ChangeEvent } from "react";
 import { setToken } from "../../token.info";
 const Login = (props) => {
   interface LoginDto {
@@ -6,17 +6,20 @@ const Login = (props) => {
     password: string;
   }
 
-  const [loginDto, setLoginDto] = useState<LoginDto | undefined>({
+  const [loginDto, setLoginDto] = useState<LoginDto>({
     username: "",
     password: "",
   });
   const [errorMessage, setErrorMessage]: [string[], Function] = useState([""]);
 
-  const handleChange = (e: SyntheticEvent): void => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setLoginDto({ ...loginDto, [name]: value });
   };
-  const signIn = async (e: SyntheticEvent, signIn: LoginDto): Promise<void> => {
+  const signIn = async (
+    e: SyntheticEvent,
+    signIn: LoginDto
+  ): Promise<string | undefined> => {
     e.preventDefault();
     try {
       console.log("happening");
@@ -39,12 +42,13 @@ const Login = (props) => {
         signIn
       ); */
       setToken(token);
-      console.log(token);
       props.history.push("/home");
+      return token;
     } catch (error) {
       console.log(error);
       console.log(error.response.data);
       setErrorMessage(error.response.data.message);
+      return error.response.data.message;
     }
   };
   return (

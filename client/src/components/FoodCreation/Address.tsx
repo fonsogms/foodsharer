@@ -1,4 +1,4 @@
-import React, { useState, SyntheticEvent } from "react";
+import React, { useState, SyntheticEvent, ChangeEvent } from "react";
 import axios from "axios";
 const getUrl = (address): string => {
   return `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?types=address&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}
@@ -6,10 +6,11 @@ const getUrl = (address): string => {
 };
 const Address = (props) => {
   const [suggestions, setSuggestions]: [any[], Function] = useState([]);
-  const handleChange = async (e: SyntheticEvent): Promise<void> => {
+  const handleChange = async (
+    e: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
     const { name, value } = e.target;
     props.setFoodDto({ ...props.foodDto, [name]: value });
-
     try {
       const {
         data: { features },
