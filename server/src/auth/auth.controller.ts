@@ -35,7 +35,7 @@ export class AuthController {
   @Post('/loggedin')
   async loggedIn(@Req() req: any, @Res() res: any) {
     let token = req.cookies.jid;
-    console.log(token);
+    //console.log(token);
     try {
       await this.authService.loggedIn(token, req, res);
     } catch (err) {

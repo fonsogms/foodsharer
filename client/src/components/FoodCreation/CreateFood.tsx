@@ -34,7 +34,7 @@ const CreateFood = () => {
     setFoodDto({ ...foodDto, [name]: value });
   };
   useEffect(() => {
-    const handleUnload = async (event) => {
+    window.onbeforeunload = async function handleUnload(event) {
       if (!isUploaded) {
         let ids = foodDto.pictures.map((elem) => {
           return elem.public_id;
@@ -53,12 +53,8 @@ const CreateFood = () => {
           }
         );
       }
-      console.log("delete");
-    };
-    window.addEventListener("onbeforeunload", handleUnload);
 
-    return () => {
-      window.removeEventListener("onbeforeunload", handleUnload);
+      console.log("delete");
     };
   }, [foodDto]);
   console.log(foodDto);
