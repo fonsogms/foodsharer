@@ -27,8 +27,9 @@ const CreateFood = () => {
     expiryDate: "",
     pictures: [],
   });
+  const [errorMessage, setErrorMessage]: [string[], Function] = useState([""]);
 
-  const [isUploaded, setIsUploaded] = useState<Boolean>(false);
+  const [isUploaded, setIsUploaded]: [Boolean, Function] = useState(false);
   const handleChange = (e: SyntheticEvent): void => {
     const { name, value } = e.target;
     setFoodDto({ ...foodDto, [name]: value });
@@ -57,11 +58,9 @@ const CreateFood = () => {
       console.log("delete");
     };
   }, [foodDto]);
-  console.log(foodDto);
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    console.log(getToken());
     const token = `Bearer ${getToken()}`;
     try {
       const res = await axios.post(
@@ -73,10 +72,18 @@ const CreateFood = () => {
           },
         }
       );
+      console.log(res);
       setIsUploaded(true);
-    } catch (err) {
-      console.log(err);
-      console.log(err.response.data.message);
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.data.message);
+      let newErrorMessage: string[] = [""];
+      if (typeof error.response.data.message == "string") {
+        newErrorMessage[0] = error.response.data.message;
+      } else {
+        newErrorMessage = error.response.data.message;
+      }
+      setErrorMessage(newErrorMessage);
     }
   };
 
@@ -84,6 +91,12 @@ const CreateFood = () => {
     <div>
       <form action="">
         <div>
+          <div>
+            {errorMessage[0] &&
+              errorMessage.map((elem, index) => {
+                return <h2 key={index}>{elem}</h2>;
+              })}
+          </div>
           <h4> Title</h4>
           <div>
             <input
@@ -119,6 +132,7 @@ const CreateFood = () => {
 
         <Address foodDto={foodDto} setFoodDto={setFoodDto}></Address>
         <FileUpload setFoodDto={setFoodDto} foodDto={foodDto}></FileUpload>
+
         <button onClick={handleSubmit}>Add food</button>
       </form>
     </div>

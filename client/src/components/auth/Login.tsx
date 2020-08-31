@@ -11,7 +11,7 @@ const Login = (props) => {
     username: "",
     password: "",
   });
-  const [errorMessage, setErrorMessage] = useState<string[]>([""]);
+  const [errorMessage, setErrorMessage]: [string[], Function] = useState([""]);
 
   const handleChange = (e: SyntheticEvent): void => {
     const { name, value } = e.target;
