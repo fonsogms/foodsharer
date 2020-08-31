@@ -3,7 +3,7 @@ import Address from "./Address";
 import FileUpload from "./FileUpload";
 import axios from "axios";
 import { getToken } from "../../token.info";
-const CreateFood = () => {
+const CreateFood = (props) => {
   interface Pictures {
     url: string;
     public_id: string;
@@ -35,12 +35,11 @@ const CreateFood = () => {
     setFoodDto({ ...foodDto, [name]: value });
   };
   useEffect(() => {
-    window.onbeforeunload = async function handleUnload(event) {
-      if (!isUploaded) {
+    if (!isUploaded) {
+      window.onbeforeunload = async function handleUnload(event) {
         let ids = foodDto.pictures.map((elem) => {
           return elem.public_id;
         });
-        console.log(ids);
 
         await axios.delete(
           process.env.REACT_APP_DOMAIN + "/api/food/cloudinary",
@@ -53,11 +52,12 @@ const CreateFood = () => {
             },
           }
         );
-      }
-
+      };
       console.log("delete");
-    };
-  }, [foodDto]);
+    } else {
+      props.history.push("/home");
+    }
+  }, [foodDto, isUploaded, props]);
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();

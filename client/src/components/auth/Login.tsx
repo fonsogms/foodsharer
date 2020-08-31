@@ -1,5 +1,4 @@
 import React, { useState, SyntheticEvent } from "react";
-import axios from "axios";
 import { setToken } from "../../token.info";
 const Login = (props) => {
   interface LoginDto {

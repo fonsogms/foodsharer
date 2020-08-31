@@ -39,7 +39,7 @@ const FileUpload = (props) => {
   };
   const deletePic = async (id: string): Promise<void> => {
     const filteredPics = props.foodDto.pictures.filter((elem) => {
-      if (elem.public_id == id) {
+      if (elem.public_id === id) {
         return false;
       } else {
         return true;
@@ -63,6 +63,7 @@ const FileUpload = (props) => {
           <div>
             <img
               style={{ width: "200px", height: "auto" }}
+              alt="loading_Image"
               src="/6d391369321565.5b7d0d570e829.gif"
             />
           </div>
@@ -75,7 +76,7 @@ const FileUpload = (props) => {
         ? props.foodDto.pictures.map((elem, index) => {
             return (
               <div key={index}>
-                <img src={elem.url} />
+                <img src={elem.url} alt="food_image" />
                 <div>
                   <button
                     onClick={(e: SyntheticEvent) => {

@@ -4,8 +4,7 @@ import SignUp from "./components/auth/SignUp";
 import { Route } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Home from "./components/Home/Home";
-import { getToken, setToken } from "./token.info";
-import axios from "axios";
+import { setToken } from "./token.info";
 import CreateFood from "./components/FoodCreation/CreateFood";
 function App() {
   useEffect(() => {
@@ -46,7 +45,13 @@ function App() {
           return <Home {...props}></Home>;
         }}
       />
-      <CreateFood></CreateFood>
+      <Route
+        exact
+        path="/food/add"
+        render={(props) => {
+          return <CreateFood {...props}></CreateFood>;
+        }}
+      />
     </div>
   );
 }
