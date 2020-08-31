@@ -37,6 +37,7 @@ export class User extends BaseEntity {
   food: Food[];
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
+
     return hash === this.password;
   }
 }

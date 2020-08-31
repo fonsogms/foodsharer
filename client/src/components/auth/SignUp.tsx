@@ -1,7 +1,8 @@
 import React, { useState, SyntheticEvent } from "react";
 import axios from "axios";
+import { setToken } from "../../token.info";
 
-const SingUp = () => {
+const SingUp = (props) => {
   interface RegisterDto {
     username: string;
     password: string;
@@ -24,15 +25,25 @@ const SingUp = () => {
     e.preventDefault();
 
     try {
-      await axios.post<string>(
-        process.env.REACT_APP_DOMAIN + "/api/auth/signUp",
-        signUp
-      );
+      const {
+        data: { token },
+      } = await axios.post<{
+        token: string;
+      }>(process.env.REACT_APP_DOMAIN + "/api/auth/signUp", signUp);
+      setToken(token);
+      props.history.push("/");
     } catch (error) {
-      console.log(error.response.data);
-      setErrorMessage(error.response.data.message);
+      console.log(error.response.data.message);
+      let newErrorMessage: string[] = [""];
+      if (typeof error.response.data.message == "string") {
+        newErrorMessage[0] = error.response.data.message;
+      } else {
+        newErrorMessage = error.response.data.message;
+      }
+      setErrorMessage(newErrorMessage);
     }
   };
+  console.log(errorMessage);
   return (
     <div>
       <h1>Please Sign Up</h1>
@@ -61,8 +72,8 @@ const SingUp = () => {
       </form>
       <div>
         {errorMessage[0] &&
-          errorMessage.map((elem) => {
-            return <h2>{elem}</h2>;
+          errorMessage.map((elem, index) => {
+            return <h2 key={index}>{elem}</h2>;
           })}
       </div>
     </div>

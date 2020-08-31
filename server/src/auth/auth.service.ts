@@ -22,12 +22,16 @@ export class AuthService {
     const user = await this.userRepository.validateUserPassword(userAuthDto);
     const payload: JwtPayload = { username: user };
     const token = this.jwtService.sign(payload);
-    res.cookie('jid', token, {
-      httpOnly: true,
-      path: '/api/auth/loggedin',
-    });
-    console.log(token);
-    res.json({ token });
+    console.log(user, 'this is user');
+    if (!user) {
+      throw new UnauthorizedException('Wrong credentials');
+    } else {
+      res.cookie('jid', token, {
+        httpOnly: true,
+        path: '/api/auth/loggedin',
+      });
+      res.json({ token });
+    }
   }
   async loggedIn(token, req, res) {
     if (!token) {
@@ -35,18 +39,17 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    let payload = null;
+    let payload: JwtPayload | null = null;
     try {
       payload = await this.jwtService.verify(token);
     } catch (err) {
       console.log(err);
       throw err;
     }
-    console.log(payload);
     const { username } = payload;
-    console.log(username);
-    const user = await this.userRepository.findOne({ username: username });
-    console.log(user);
+    const user: User = await this.userRepository.findOne({
+      username: username,
+    });
     if (!user) {
       throw new Error('user not found');
     }

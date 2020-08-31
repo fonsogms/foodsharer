@@ -19,7 +19,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
   // el mewtodo validate tiene  que estar en todas las estrategias
   async validate(payload: JwtPayload): Promise<User> {
-    console.log('happening?');
     const { username } = payload;
     const user = this.userRepository.findOne({ username });
     if (!user) {

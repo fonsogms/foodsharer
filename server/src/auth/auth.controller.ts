@@ -11,9 +11,6 @@ import {
 } from '@nestjs/common';
 import { UserAuthDto } from './dto/userAuth.dto';
 import { AuthService } from './auth.service';
-import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from './get-user.decorator';
-import { User } from './user.entity';
 
 @Controller('api/auth')
 export class AuthController {
@@ -29,12 +26,20 @@ export class AuthController {
     @Body(ValidationPipe) userAuthDto: UserAuthDto,
     @Res() res: any,
   ): Promise<void> {
-    this.authService.signIn(userAuthDto, res);
+    try {
+      await this.authService.signIn(userAuthDto, res);
+    } catch (err) {
+      throw err;
+    }
   }
   @Post('/loggedin')
   async loggedIn(@Req() req: any, @Res() res: any) {
     let token = req.cookies.jid;
     console.log(token);
-    await this.authService.loggedIn(token, req, res);
+    try {
+      await this.authService.loggedIn(token, req, res);
+    } catch (err) {
+      throw err;
+    }
   }
 }

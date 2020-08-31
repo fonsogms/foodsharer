@@ -1,5 +1,6 @@
 import React, { useState, SyntheticEvent } from "react";
 import axios from "axios";
+import { setToken } from "../../token.info";
 const Login = (props) => {
   interface LoginDto {
     username: string;
@@ -18,14 +19,31 @@ const Login = (props) => {
   };
   const signIn = async (e: SyntheticEvent, signIn: LoginDto): Promise<void> => {
     e.preventDefault();
-
     try {
-      await axios.post<string>(
+      console.log("happening");
+      const requestBody = await JSON.stringify(signIn);
+      const body = await fetch(
+        process.env.REACT_APP_DOMAIN + "/api/auth/signIn",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: requestBody,
+        }
+      );
+      const { token } = await body.json();
+
+      /*   const token: string = await axios.post(
         process.env.REACT_APP_DOMAIN + "/api/auth/signIn",
         signIn
-      );
+      ); */
+      setToken(token);
+      console.log(token);
       props.history.push("/home");
     } catch (error) {
+      console.log(error);
       console.log(error.response.data);
       setErrorMessage(error.response.data.message);
     }

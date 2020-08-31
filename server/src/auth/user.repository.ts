@@ -38,9 +38,11 @@ export class UserRepository extends Repository<User> {
     if (!user) {
       throw new UnauthorizedException('Wrong credentials');
     }
-    if (user && user.validatePassword(password)) {
+    if (user && (await user.validatePassword(password))) {
+      console.log('this');
       return user.username;
     } else {
+      console.log('or this');
       return null;
     }
   }
