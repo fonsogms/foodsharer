@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from "react";
-
+import Map from "./Map";
 interface LatLong {
-  coords: {
-    latitude: number;
-    longitude: number;
-  };
+  latitude: number;
+  longitude: number;
 }
 
 const Home = () => {
   const [location, setLocation] = useState<LatLong>({
-    coords: {
-      latitude: 0,
-      longitude: 0,
-    },
+    latitude: 0,
+    longitude: 0,
   });
   useEffect(() => {
     try {
-      navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position);
-        setLocation(position);
+      navigator.geolocation.getCurrentPosition((data) => {
+        const { coords } = data;
+        setLocation(coords);
       });
     } catch (error) {
       console.log(error);
@@ -28,7 +24,12 @@ const Home = () => {
   return (
     <div>
       <h1>Welcome User</h1>
-      {location && <h2>{location.coords.latitude}</h2>}
+      {location.latitude ? (
+        <div>
+          <h2>{location.latitude}</h2>
+          <Map location={location}></Map>
+        </div>
+      ) : null}
     </div>
   );
 };

@@ -77,7 +77,11 @@ const FileUpload = (props) => {
         ? props.foodDto.pictures.map((elem, index) => {
             return (
               <div key={index}>
-                <img src={elem.url} alt="food_image" />
+                <img
+                  src={elem.url}
+                  alt="food_image"
+                  style={{ width: "100px", height: "auto" }}
+                />
                 <div>
                   <button
                     onClick={(e: SyntheticEvent) => {
