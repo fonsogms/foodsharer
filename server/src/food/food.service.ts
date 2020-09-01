@@ -40,7 +40,9 @@ export class FoodService {
   ): Promise<Food> {
     const foundFood = await this.getFoodById(id, user);
     for (let key of Object.keys(foodDto)) {
-      foundFood[key] = foodDto[key];
+      if (foodDto[key]) {
+        foundFood[key] = foodDto[key];
+      }
     }
     return foundFood;
   }
