@@ -35,15 +35,16 @@ const Login = (props) => {
           body: requestBody,
         }
       );
-      const { token } = await body.json();
 
+      const { token } = await body.json();
+      if (token) {
+        setToken(token);
+        props.history.push("/home");
+      }
       /*   const token: string = await axios.post(
         process.env.REACT_APP_DOMAIN + "/api/auth/signIn",
         signIn
       ); */
-      setToken(token);
-      props.history.push("/home");
-      return token;
     } catch (error) {
       console.log(error);
       console.log(error.response.data);

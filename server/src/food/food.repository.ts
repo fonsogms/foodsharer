@@ -9,7 +9,7 @@ export class FoodRepository extends Repository<Food> {
     for (let key of Object.keys(foodDto)) {
       foodItem[key] = foodDto[key];
     }
-    foodItem.owner = user;
+    foodItem.owner = user.id;
     if (!foodItem.expiryDate) {
       const today = new Date();
       const tomorrow = new Date(today);

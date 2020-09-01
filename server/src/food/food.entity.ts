@@ -34,5 +34,5 @@ export class Food extends BaseEntity {
     user => user.food,
     { eager: false },
   )
-  owner: User;
+  owner: number;
 }

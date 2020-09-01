@@ -10,6 +10,8 @@ import {
   Delete,
   Param,
   Query,
+  Req,
+  Put,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
@@ -20,6 +22,9 @@ import { FoodDto } from './dto/food.dto';
 import { Food } from './food.entity';
 import { SearchFoodDto } from './dto/searchFood.dto';
 import { v2 as cloudinary } from 'cloudinary';
+import { Request } from 'express';
+import axios from 'axios';
+import { JwtPayload } from 'src/auth/userPayload.interface';
 @Controller('api/food')
 @UseGuards(AuthGuard())
 export class FoodController {
@@ -39,18 +44,42 @@ export class FoodController {
 
   @Delete('/cloudinary')
   async deleteCloudinary(@Body() data: { id: string[] }) {
-    console.log(data);
     const { id } = data;
-    try {
-      const res = await cloudinary.api.delete_resources([...id]);
-      console.log(res);
-    } catch (err) {
-      throw err;
-    }
+    return this.foodService.deleteCloudinary(id);
   }
-  /* @Post('/cloudinaryUpload')
+  @Get('/:id')
+  async getFoodByFood(
+    @Param('id') id: number,
+    @GetUser() user: JwtPayload,
+  ): Promise<Food> {
+    return this.foodService.getFoodById(id, user);
+  }
+  @Delete('/:id')
+  async deleteFood(
+    @Param('id') id: number,
+    @GetUser() user: JwtPayload,
+  ): Promise<Food> {
+    return this.foodService.delete(id, user);
+  }
+  @Put('/:id')
+  async editFood(
+    @GetUser() user: JwtPayload,
+    @Body() foodDto: FoodDto,
+    @Param('id') id: number,
+  ): Promise<Food> {
+    return await this.foodService.editFoodById(foodDto, id, user);
+  }
+
+  /*  @Post('/cloudinaryUpload')
   @UseInterceptors(FileInterceptor('file'))
-  async cloudinaryUpload(@UploadedFile() file, @GetUser() user: User) {
+  async cloudinaryUpload(
+    @UploadedFile() file,
+    @GetUser() user: User,
+    @Req() req: Request,
+  ) {
+    console.log(file);
+    file.upload_preset = 'foodSharer';
+    console.log(req.body);
     try {
       console.log('trying?');
       const fileInfo = await axios.post(
@@ -59,8 +88,9 @@ export class FoodController {
       );
       return fileInfo;
     } catch (err) {
-      console.log(Object.keys(err));
-      console.log(err.response.data);
+      //console.log(err);
+      // console.log(Object.keys(err));
+      // console.log(err.response.data);
       throw err;
     }
   } */

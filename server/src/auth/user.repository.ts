@@ -10,7 +10,9 @@ import {
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async signUp(userAuthDto: UserAuthDto): Promise<string> {
+  async signUp(
+    userAuthDto: UserAuthDto,
+  ): Promise<{ username: string; id: number }> {
     const { username, password } = userAuthDto;
     const user = new User();
     const salt = await bcrypt.genSalt();
@@ -20,10 +22,10 @@ export class UserRepository extends Repository<User> {
     console.log(user, 'this is the user');
     try {
       console.log('happening?');
-      await user.save();
+      const createdUser = await user.save();
       console.log('happening?');
 
-      return username;
+      return { username: createdUser.username, id: createdUser.id };
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException('Username already exists');
@@ -32,7 +34,7 @@ export class UserRepository extends Repository<User> {
       }
     }
   }
-  async validateUserPassword(userAuthDto: UserAuthDto): Promise<string | null> {
+  async validateUserPassword(userAuthDto: UserAuthDto): Promise<User | null> {
     const { username, password } = userAuthDto;
     const user = await this.findOne({ username });
     if (!user) {
@@ -40,7 +42,7 @@ export class UserRepository extends Repository<User> {
     }
     if (user && (await user.validatePassword(password))) {
       console.log('this');
-      return user.username;
+      return user;
     } else {
       console.log('or this');
       return null;

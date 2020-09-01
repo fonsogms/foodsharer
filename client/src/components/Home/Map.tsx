@@ -21,10 +21,6 @@ const Map = (props) => {
   return (
     <div>
       <ReactMapGL
-        marker={{
-          latitude: firstView.latitude,
-          longitude: firstView.longitude,
-        }}
         {...firstView}
         mapboxApiAccessToken={token}
         mapStyle="mapbox://styles/fonsogms/ck9h762i810v71io0zxm8bg2k"

@@ -24,6 +24,7 @@ export class FoodDto {
   @IsNumber()
   longitude: number;
   @IsString()
+  @IsNotEmpty()
   address: string;
   @ValidateNested({ each: true })
   pictures: Pictures[];

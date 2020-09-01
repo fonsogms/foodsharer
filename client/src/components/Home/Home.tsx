@@ -14,6 +14,7 @@ const Home = () => {
     try {
       navigator.geolocation.getCurrentPosition((data) => {
         const { coords } = data;
+        console.log(coords);
         setLocation(coords);
       });
     } catch (error) {
@@ -26,7 +27,6 @@ const Home = () => {
       <h1>Welcome User</h1>
       {location.latitude ? (
         <div>
-          <h2>{location.latitude}</h2>
           <Map location={location}></Map>
         </div>
       ) : null}
