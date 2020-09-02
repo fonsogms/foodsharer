@@ -27,7 +27,7 @@ export class Food extends BaseEntity {
   longitude: number;
   @Column()
   address: string;
-  @Column('simple-array')
+  @Column('json')
   pictures: Pictures[];
   @ManyToOne(
     type => User,
