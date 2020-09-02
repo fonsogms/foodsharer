@@ -45,9 +45,27 @@ const FoodDetails = (props) => {
           );
         }
         if (typeof foodDto[key] === "object") {
-          foodDto[key].map((elem, index) => {
-            return <img src={elem.url} alt="food_pics" />;
-          });
+          console.log("happening");
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
+            >
+              {foodDto[key].map((elem, index) => {
+                return (
+                  <img
+                    key={index}
+                    src={elem.url}
+                    alt="food_pics"
+                    style={{ width: "100px", height: "auto" }}
+                  />
+                );
+              })}
+            </div>
+          );
         }
       })}
     </div>
