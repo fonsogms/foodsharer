@@ -27,8 +27,9 @@ const CreateFood = (props) => {
     setFoodDto({ ...foodDto, [name]: value });
   };
   useEffect(() => {
+    let handleUnload;
     if (!isUploaded) {
-      window.onbeforeunload = async function handleUnload(event) {
+      handleUnload = async (event) => {
         let ids = foodDto.pictures.map((elem) => {
           return elem.public_id;
         });
@@ -45,9 +46,10 @@ const CreateFood = (props) => {
           }
         );
       };
-      console.log("delete");
-    } else {
-      props.history.push("/home");
+      window.onbeforeunload = handleUnload;
+    }
+    if (isUploaded) {
+      window.onbeforeunload = null;
     }
   }, [foodDto, isUploaded, props]);
 
@@ -55,7 +57,7 @@ const CreateFood = (props) => {
     e.preventDefault();
     const token = `Bearer ${props.token}`;
     try {
-      const res = await axios.post(
+      const { data } = await axios.post(
         process.env.REACT_APP_DOMAIN + "/api/food/add",
         foodDto,
         {
@@ -64,8 +66,8 @@ const CreateFood = (props) => {
           },
         }
       );
-      console.log(res);
       setIsUploaded(true);
+      props.history.push("/food/" + data.id);
     } catch (error) {
       console.log(error);
       console.log(error.response.data.message);
