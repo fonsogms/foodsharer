@@ -44,6 +44,7 @@ export class FoodService {
         foundFood[key] = foodDto[key];
       }
     }
+    await foundFood.save();
     return foundFood;
   }
   async deleteCloudinary(ids: string[]): Promise<boolean> {

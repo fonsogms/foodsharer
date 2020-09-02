@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import SignUp from "./components/auth/SignUp";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Home from "./components/Home/Home";
-import { setToken } from "./token.info";
-import CreateFood from "./components/FoodCreation/CreateFood";
+import CreateFood from "./components/Food/FoodCreation/CreateFood";
+import FoodDetails from "./components/Food/foodDetails/FoodDetails";
 function App() {
+  const [token, setToken] = useState<string>("");
   useEffect(() => {
     const checkToken = async () => {
       const body = await fetch(
@@ -22,36 +23,47 @@ function App() {
     };
     checkToken();
   }, []);
+  console.log(token);
   return (
     <div className="App">
-      <Route
-        exact
-        path="/singUp"
-        render={(props) => {
-          return <SignUp {...props}></SignUp>;
-        }}
-      />
-      <Route
-        exact
-        path="/login"
-        render={(props) => {
-          return <Login {...props}></Login>;
-        }}
-      />
-      <Route
-        exact
-        path="/home"
-        render={(props) => {
-          return <Home {...props}></Home>;
-        }}
-      />
-      <Route
-        exact
-        path="/food/add"
-        render={(props) => {
-          return <CreateFood {...props}></CreateFood>;
-        }}
-      />
+      <Switch>
+        <Route
+          exact
+          path="/singUp"
+          render={(props) => {
+            return <SignUp {...props} token={token}></SignUp>;
+          }}
+        />
+        <Route
+          exact
+          path="/login"
+          render={(props) => {
+            return <Login {...props} token={token}></Login>;
+          }}
+        />
+        <Route
+          exact
+          path="/home"
+          render={(props) => {
+            return <Home {...props} token={token}></Home>;
+          }}
+        />
+
+        <Route
+          exact
+          path="/food/add"
+          render={(props) => {
+            return <CreateFood {...props} token={token}></CreateFood>;
+          }}
+        />
+        <Route
+          exact
+          path="/food/:id"
+          render={(props) => {
+            return <FoodDetails {...props} token={token}></FoodDetails>;
+          }}
+        />
+      </Switch>
     </div>
   );
 }

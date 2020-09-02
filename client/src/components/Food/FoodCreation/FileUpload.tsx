@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useState, ChangeEvent } from "react";
 import axios from "axios";
-import { getToken } from "../../token.info";
+import { getToken } from "../../../token.info";
 const FileUpload = (props) => {
   const [loading, setLoading] = useState<Boolean>(false);
   const uploadImage = async (e: ChangeEvent<HTMLInputElement>) => {

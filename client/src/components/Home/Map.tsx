@@ -19,7 +19,7 @@ const Map = (props) => {
   };
 
   return (
-    <div>
+    <div style={{ display: "flex", justifyContent: "center" }}>
       <ReactMapGL
         {...firstView}
         mapboxApiAccessToken={token}

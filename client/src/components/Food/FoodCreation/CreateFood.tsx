@@ -8,22 +8,8 @@ import React, {
 import Address from "./Address";
 import FileUpload from "./FileUpload";
 import axios from "axios";
-import { getToken } from "../../token.info";
+import { FoodDto } from "../foodDto.interface";
 const CreateFood = (props) => {
-  interface Pictures {
-    url: string;
-    public_id: string;
-  }
-  interface FoodDto {
-    title: string;
-    expiryDate: string;
-    description: string;
-    latitude: number;
-    longitude: number;
-    address: string;
-    pictures: Pictures[];
-  }
-
   const [foodDto, setFoodDto] = useState<FoodDto>({
     title: "",
     description: "",
@@ -51,7 +37,7 @@ const CreateFood = (props) => {
           process.env.REACT_APP_DOMAIN + "/api/food/cloudinary",
           {
             headers: {
-              Authorization: "Bearer " + getToken(),
+              Authorization: "Bearer " + props.token,
             },
             data: {
               id: ids,
@@ -67,7 +53,7 @@ const CreateFood = (props) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const token = `Bearer ${getToken()}`;
+    const token = `Bearer ${props.token}`;
     try {
       const res = await axios.post(
         process.env.REACT_APP_DOMAIN + "/api/food/add",

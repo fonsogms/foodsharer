@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Map from "./Map";
 interface LatLong {
   latitude: number;
   longitude: number;
 }
 
-const Home = () => {
+const Home = (props) => {
   const [location, setLocation] = useState<LatLong>({
     latitude: 0,
     longitude: 0,
