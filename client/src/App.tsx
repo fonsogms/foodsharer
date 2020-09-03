@@ -6,6 +6,7 @@ import Login from "./components/auth/Login";
 import Home from "./components/Home/Home";
 import CreateFood from "./components/Food/FoodCreation/CreateFood";
 import FoodDetails from "./components/Food/foodDetails/FoodDetails";
+import FoodEdit from "./components/Food/editFood/FoodEdit";
 function App() {
   const [token, setToken] = useState<string>("");
   useEffect(() => {
@@ -54,6 +55,13 @@ function App() {
           path="/food/add"
           render={(props) => {
             return <CreateFood {...props} token={token}></CreateFood>;
+          }}
+        />
+        <Route
+          exact
+          path="/food/edit/:id"
+          render={(props) => {
+            return <FoodEdit {...props} token={token}></FoodEdit>;
           }}
         />
         <Route

@@ -1,6 +1,5 @@
 import React, { SyntheticEvent, useState, ChangeEvent } from "react";
 import axios from "axios";
-import { getToken } from "../../../token.info";
 const FileUpload = (props) => {
   const [loading, setLoading] = useState<Boolean>(false);
   const uploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +49,7 @@ const FileUpload = (props) => {
 
     await axios.delete(process.env.REACT_APP_DOMAIN + "/api/food/cloudinary", {
       headers: {
-        Authorization: "Bearer " + getToken(),
+        Authorization: "Bearer " + props.token,
       },
       data: { id: [id] },
     });

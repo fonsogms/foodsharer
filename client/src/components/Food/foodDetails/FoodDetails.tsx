@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { FoodDto } from "../foodDto.interface";
+import { Link } from "react-router-dom";
 import axios from "axios";
+interface FoodObject extends FoodDto {
+  id: number;
+}
 const FoodDetails = (props) => {
-  const [foodDto, setFoodDto] = useState<FoodDto>({
+  const [foodDto, setFoodDto] = useState<FoodObject>({
+    id: 0,
     title: "",
     description: "",
     latitude: 0,
@@ -11,7 +16,6 @@ const FoodDetails = (props) => {
     expiryDate: "",
     pictures: [],
   });
-  //const [uploaded, setUploaded] = useState<boolean>(false);
   useEffect(() => {
     const getData = async (): Promise<void> => {
       console.log(props.token);
@@ -68,6 +72,11 @@ const FoodDetails = (props) => {
           );
         }
       })}
+      <div>
+        <button>
+          <Link to={"/food/edit/" + foodDto.id}>Edit</Link>
+        </button>
+      </div>
     </div>
   );
 };

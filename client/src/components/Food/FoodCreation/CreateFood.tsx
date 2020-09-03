@@ -5,8 +5,8 @@ import React, {
   MouseEvent,
   FormEvent,
 } from "react";
-import Address from "./Address";
-import FileUpload from "./FileUpload";
+import Address from "../Address";
+import FileUpload from "../FileUpload";
 import axios from "axios";
 import { FoodDto } from "../foodDto.interface";
 const CreateFood = (props) => {
@@ -125,7 +125,11 @@ const CreateFood = (props) => {
         </div>
 
         <Address foodDto={foodDto} setFoodDto={setFoodDto}></Address>
-        <FileUpload setFoodDto={setFoodDto} foodDto={foodDto}></FileUpload>
+        <FileUpload
+          setFoodDto={setFoodDto}
+          foodDto={foodDto}
+          token={props.token}
+        ></FileUpload>
 
         <button type="submit">Add food</button>
       </form>
