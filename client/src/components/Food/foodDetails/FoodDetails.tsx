@@ -16,6 +16,7 @@ const FoodDetails = (props) => {
     expiryDate: "",
     pictures: [],
   });
+  const [errorMessage, setErrorMessage] = useState<string[]>([""]);
   useEffect(() => {
     const getData = async (): Promise<void> => {
       console.log(props.token);
@@ -25,11 +26,18 @@ const FoodDetails = (props) => {
           process.env.REACT_APP_DOMAIN + "/api/food/" + props.match.params.id,
           { headers: { Authorization: "Bearer " + props.token } }
         );
-
+        //setErrorMessage([""]);
         setFoodDto(data);
-      } catch (err) {
-        console.log(err);
-        console.log(err.response.data.message);
+      } catch (error) {
+        console.log(error);
+        console.log(error.response.data.message);
+        let newErrorMessage: string[] = [""];
+        if (typeof error.response.data.message == "string") {
+          newErrorMessage[0] = error.response.data.message;
+        } else {
+          newErrorMessage = error.response.data.message;
+        }
+        setErrorMessage(newErrorMessage);
       }
     };
     getData();
@@ -37,46 +45,54 @@ const FoodDetails = (props) => {
   console.log(foodDto.pictures[0]);
   return (
     <div>
-      {Object.keys(foodDto).map((key, index) => {
-        console.log(foodDto, key);
-        if (typeof foodDto[key] === "string") {
-          return (
-            <div key={index}>
-              <h1>
-                {key}: {foodDto[key]}
-              </h1>
-            </div>
-          );
-        }
-        if (typeof foodDto[key] === "object") {
-          console.log("happening");
-          return (
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "center",
-              }}
-            >
-              {foodDto[key].map((elem, index) => {
-                return (
-                  <img
-                    key={index}
-                    src={elem.url}
-                    alt="food_pics"
-                    style={{ width: "100px", height: "auto" }}
-                  />
-                );
-              })}
-            </div>
-          );
-        }
-      })}
-      <div>
-        <button>
-          <Link to={"/food/edit/" + foodDto.id}>Edit</Link>
-        </button>
-      </div>
+      {errorMessage[0] && foodDto.title ? (
+        errorMessage.map((elem, index) => {
+          return <h2 key={index}>{elem}</h2>;
+        })
+      ) : (
+        <>
+          {Object.keys(foodDto).map((key, index) => {
+            console.log(foodDto, key);
+            if (typeof foodDto[key] === "string") {
+              return (
+                <div key={index}>
+                  <h1>
+                    {key}: {foodDto[key]}
+                  </h1>
+                </div>
+              );
+            }
+            if (typeof foodDto[key] === "object") {
+              console.log("happening");
+              return (
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                  }}
+                >
+                  {foodDto[key].map((elem, index) => {
+                    return (
+                      <img
+                        key={index}
+                        src={elem.url}
+                        alt="food_pics"
+                        style={{ width: "100px", height: "auto" }}
+                      />
+                    );
+                  })}
+                </div>
+              );
+            }
+          })}
+          <div>
+            <button>
+              <Link to={"/food/edit/" + foodDto.id}>Edit</Link>
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -130,7 +130,7 @@ const FoodEdit = (props) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        {errorMessage[0] ? (
+        {errorMessage[0] && !foodDto.title ? (
           errorMessage.map((elem, index) => {
             return <h2 key={index}>{elem}</h2>;
           })
