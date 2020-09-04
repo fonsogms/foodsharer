@@ -45,7 +45,7 @@ const FoodDetails = (props) => {
   console.log(foodDto.pictures[0]);
   return (
     <div>
-      {errorMessage[0] && foodDto.title ? (
+      {errorMessage[0] ? (
         errorMessage.map((elem, index) => {
           return <h2 key={index}>{elem}</h2>;
         })

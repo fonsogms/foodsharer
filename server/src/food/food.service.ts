@@ -5,6 +5,7 @@ import { FoodRepository } from './food.repository';
 import { Food } from './food.entity';
 import { v2 as cloudinary } from 'cloudinary';
 import { JwtPayload } from 'src/auth/userPayload.interface';
+import { SearchFoodDto } from './dto/searchFood.dto';
 
 @Injectable()
 export class FoodService {
@@ -12,6 +13,11 @@ export class FoodService {
   async add(foodDto: FoodDto, user: User): Promise<Food> {
     return this.foodRepository.add(foodDto, user);
   }
+  async getAllFood(searchDto: SearchFoodDto, user: JwtPayload) {
+    console.log(searchDto);
+    this.foodRepository.getAllFood();
+  }
+
   async getFoodById(id: number, user: JwtPayload): Promise<Food> {
     const food = await this.foodRepository.findOne({
       where: { id: id, owner: user.id },

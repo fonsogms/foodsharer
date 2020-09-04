@@ -40,7 +40,12 @@ export class FoodController {
     return this.foodService.add(foodDto, user);
   }
   @Get('/')
-  async getFood(searchFoodDto: SearchFoodDto) {}
+  async getAllFood(
+    @Query() searchFoodDto: SearchFoodDto,
+    @GetUser() user: JwtPayload,
+  ) {
+    return this.foodService.getAllFood(searchFoodDto, user);
+  }
 
   @Delete('/cloudinary')
   async deleteCloudinary(@Body() data: { id: string[] }) {
@@ -48,7 +53,7 @@ export class FoodController {
     return this.foodService.deleteCloudinary(id);
   }
   @Get('/:id')
-  async getFoodByFood(
+  async getFoodById(
     @Param('id') id: number,
     @GetUser() user: JwtPayload,
   ): Promise<Food> {

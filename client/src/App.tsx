@@ -7,7 +7,8 @@ import Home from "./components/Home/Home";
 import CreateFood from "./components/Food/FoodCreation/CreateFood";
 import FoodDetails from "./components/Food/foodDetails/FoodDetails";
 import FoodEdit from "./components/Food/editFood/FoodEdit";
-function App() {
+import Navbar from "./components/Navbar";
+function App(props) {
   const [token, setToken] = useState<string>("");
   useEffect(() => {
     const checkToken = async () => {
@@ -27,6 +28,7 @@ function App() {
   console.log(token);
   return (
     <div className="App">
+      <Navbar></Navbar>
       <Switch>
         <Route
           exact
