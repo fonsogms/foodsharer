@@ -2,6 +2,8 @@ import { Repository, Entity, EntityRepository, getConnection } from 'typeorm';
 import { Food } from './food.entity';
 import { FoodDto } from './dto/food.dto';
 import { User } from 'src/auth/user.entity';
+import { JwtPayload } from 'src/auth/userPayload.interface';
+import { SearchFoodDto } from './dto/searchFood.dto';
 @EntityRepository(Food)
 export class FoodRepository extends Repository<Food> {
   async add(foodDto: FoodDto, user: User): Promise<Food> {
@@ -24,30 +26,30 @@ export class FoodRepository extends Repository<Food> {
       throw err;
     }
   }
-  async getAllFood() {
-    //2 * 3961 * asin(sqrt((sin(radians((latitude - ${52.714748}) / 2))) ^ 2 + cos(radians(${52.714748})) * cos(radians(latitude)) * (sin(radians((longitude - lon1) / 2))) ^ 2)) as distance
+  async getAllFood(
+    searchDto: SearchFoodDto,
+    user: JwtPayload,
+  ): Promise<Food[]> {
+    // SELECT * from(
+    //   Select *,2 * 3961 * asin(sqrt((sin(radians((latitude - latitude) / 2))) ^ 2 + cos(radians(latitude)) * cos(radians(latitude)) * (sin(radians((longitude - 1.684253) / 2))) ^ 2)) as distance
+    // from
+    //   food)as subQuery
+    //   WHERE subQuery.distance >0;
 
-    const food = await getConnection()
+    const { latitude, longitude, distance } = searchDto;
+    const foods = await getConnection()
       .createQueryBuilder()
       .select('*')
       .from(innerQuery => {
         return innerQuery
           .select(
-            `*, 2 * 3961 * asin(sqrt((sin(radians((latitude - ${52.714748}) / 2))) ^ 2 + cos(radians(${52.714748})) * cos(radians(latitude)) * (sin(radians((longitude - ${1.684253}) / 2))) ^ 2))`,
+            `*, 2 * 3961 * asin(sqrt((sin(radians((latitude - ${latitude}) / 2))) ^ 2 + cos(radians(${latitude})) * cos(radians(latitude)) * (sin(radians((longitude - ${longitude}) / 2))) ^ 2))`,
             'distance',
           )
           .from(Food, 'food');
       }, 'subQuery')
-      .where('distance > 0', { registered: true })
+      .where('distance < :distance', { distance: distance })
       .getRawMany();
-    console.log(food);
-
-    /*  const query = this.createQueryBuilder('food'); //this refers to task entity
-    const result = await query
-      .select('food')
-      .from(Food, 'food')
-      .getMany();
-    console.log(result); */
-    /*  query.select("2 * 3961 * asin(sqrt((sin(radians((latitude - ${52.714748}) / 2))) ^ 2 + cos(radians(${52.714748})) * cos(radians(latitude)) * (sin(radians((longitude - lon1) / 2))) ^ 2)) as distance") */
+    return foods;
   }
 }

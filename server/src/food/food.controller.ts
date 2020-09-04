@@ -43,7 +43,7 @@ export class FoodController {
   async getAllFood(
     @Query() searchFoodDto: SearchFoodDto,
     @GetUser() user: JwtPayload,
-  ) {
+  ): Promise<Food[]> {
     return this.foodService.getAllFood(searchFoodDto, user);
   }
 

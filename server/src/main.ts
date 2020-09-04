@@ -3,18 +3,7 @@ import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
 import { v2 as cloudinary } from 'cloudinary';
-import * as haversine from 'haversine';
-const start = {
-  latitude: 30.849635,
-  longitude: -83.24559,
-};
 
-const end = {
-  latitude: 27.950575,
-  longitude: -82.457178,
-};
-
-console.log(haversine(start, end, { unit: 'kilometer' }));
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({ origin: ['http://localhost:3000'], credentials: true });

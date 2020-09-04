@@ -13,9 +13,11 @@ export class FoodService {
   async add(foodDto: FoodDto, user: User): Promise<Food> {
     return this.foodRepository.add(foodDto, user);
   }
-  async getAllFood(searchDto: SearchFoodDto, user: JwtPayload) {
-    console.log(searchDto);
-    this.foodRepository.getAllFood();
+  async getAllFood(
+    searchDto: SearchFoodDto,
+    user: JwtPayload,
+  ): Promise<Food[]> {
+    return this.foodRepository.getAllFood(searchDto, user);
   }
 
   async getFoodById(id: number, user: JwtPayload): Promise<Food> {
