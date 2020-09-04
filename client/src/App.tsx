@@ -19,7 +19,9 @@ function App(props) {
           exact
           path="/singUp"
           render={(props) => {
-            return <SignUp {...props} token={token}></SignUp>;
+            return (
+              <SignUp {...props} token={token} setToken={setToken}></SignUp>
+            );
           }}
         />
         <Route

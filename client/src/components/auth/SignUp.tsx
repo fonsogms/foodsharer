@@ -30,7 +30,7 @@ const SingUp = (props) => {
       } = await axios.post<{
         token: string;
       }>(process.env.REACT_APP_DOMAIN + "/api/auth/signUp", signUp);
-      setToken(token);
+      props.setToken(token);
       props.history.push("/home");
     } catch (error) {
       console.log(error.response.data.message);
