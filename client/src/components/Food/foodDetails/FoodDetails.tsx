@@ -41,7 +41,7 @@ const FoodDetails = (props) => {
       }
     };
     getData();
-  }, [props.token]);
+  }, []);
   console.log(foodDto.pictures[0]);
   return (
     <div>

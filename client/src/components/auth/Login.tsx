@@ -38,7 +38,7 @@ const Login = (props) => {
 
       const { token } = await body.json();
       if (token) {
-        setToken(token);
+        props.setToken(token);
         props.history.push("/home");
       }
       /*   const token: string = await axios.post(

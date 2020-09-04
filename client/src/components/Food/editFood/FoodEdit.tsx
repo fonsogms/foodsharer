@@ -44,7 +44,7 @@ const FoodEdit = (props) => {
       }
     };
     getData();
-  }, [props.token]);
+  }, []);
   useEffect(() => {
     let handleUnload;
     if (!isUploaded) {

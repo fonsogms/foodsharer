@@ -9,23 +9,8 @@ import FoodDetails from "./components/Food/foodDetails/FoodDetails";
 import FoodEdit from "./components/Food/editFood/FoodEdit";
 import Navbar from "./components/Navbar";
 function App(props) {
-  const [token, setToken] = useState<string>("");
-  useEffect(() => {
-    const checkToken = async () => {
-      const body = await fetch(
-        process.env.REACT_APP_DOMAIN + "/api/auth/loggedin",
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
-      const data = await body.json();
-      console.log(data);
-      setToken(data.token);
-    };
-    checkToken();
-  }, []);
-  console.log(token);
+  const [token, setToken] = useState<string>(props.token);
+
   return (
     <div className="App">
       <Navbar></Navbar>
@@ -41,7 +26,7 @@ function App(props) {
           exact
           path="/login"
           render={(props) => {
-            return <Login {...props} token={token}></Login>;
+            return <Login {...props} token={token} setToken={setToken}></Login>;
           }}
         />
         <Route

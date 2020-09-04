@@ -26,7 +26,7 @@ const Home = (props) => {
       });
     };
     getData();
-  }, [props.token]);
+  }, []);
   const getLocations = async (
     latitude: number,
     longitude: number,

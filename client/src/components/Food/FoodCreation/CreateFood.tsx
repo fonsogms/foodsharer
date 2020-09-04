@@ -51,7 +51,7 @@ const CreateFood = (props) => {
     if (isUploaded) {
       window.onbeforeunload = null;
     }
-  }, [foodDto, isUploaded, props]);
+  }, [foodDto, isUploaded]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
