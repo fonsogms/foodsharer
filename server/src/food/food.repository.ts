@@ -35,7 +35,7 @@ export class FoodRepository extends Repository<Food> {
     // from
     //   food)as subQuery
     //   WHERE subQuery.distance >0;
-
+    console.log(searchDto);
     const { latitude, longitude, distance } = searchDto;
     const foods = await getConnection()
       .createQueryBuilder()
@@ -50,6 +50,7 @@ export class FoodRepository extends Repository<Food> {
       }, 'subQuery')
       .where('distance < :distance', { distance: distance })
       .getRawMany();
+    console.log(foods);
     return foods;
   }
 }
