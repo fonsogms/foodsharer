@@ -6,10 +6,9 @@ const StyledDiv = styled.div`
   margin: 10px;
 `;
 const SearchBar = (props) => {
-  const [search, setSearch] = useState<string>("");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    setSearch(value);
+    props.setSearch(value);
   };
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
@@ -23,7 +22,7 @@ const SearchBar = (props) => {
           placeholder="Search"
           type="text"
           onChange={(e) => handleChange(e)}
-          value={search}
+          value={props.search}
         />
         <img
           className="clear-icon"

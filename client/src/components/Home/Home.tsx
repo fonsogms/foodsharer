@@ -56,6 +56,7 @@ const Home = (props) => {
     height: "60vh",
     zoom: 10,
   });
+  const [search, setSearch] = useState("");
   const getData = () => {
     if (!props.token) {
       props.history.push("/login");
@@ -83,6 +84,13 @@ const Home = (props) => {
     getData();
   }, []);
   useEffect(() => {
+    const filtered = foodItems.filter((elem) => {
+      if (elem.title.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+        return true;
+    });
+    setFilteredItems(filtered);
+  }, [search]);
+  useEffect(() => {
     const changeData = async () => {
       const food = await getLocations(
         viewPort.latitude,
@@ -91,6 +99,7 @@ const Home = (props) => {
         props.token
       );
       setFoodItems(food);
+      setFilteredItems(food);
     };
     changeData();
   }, [viewPort]);
@@ -115,12 +124,12 @@ const Home = (props) => {
   return (
     <div>
       <h1>Welcome User</h1>
-      <SearchBar></SearchBar>
+      <SearchBar setSearch={setSearch} search={search}></SearchBar>
       {location.latitude ? (
         <div>
           <Map
             location={location}
-            foodItems={foodItems}
+            foodItems={filteredItems}
             viewPort={viewPort}
             setViewPort={setViewPort}
           ></Map>

@@ -17,7 +17,6 @@ const Map = (props) => {
         mapboxApiAccessToken={token}
         mapStyle="mapbox://styles/fonsogms/ck9h762i810v71io0zxm8bg2k"
         onViewportChange={(viewport) => {
-          console.log(viewport);
           props.setViewPort(viewport);
         }}
       >
@@ -52,6 +51,7 @@ const Map = (props) => {
             onClose={() => {
               setSelectedFood(null);
             }}
+            closeOnClick={false}
           >
             <h3>{selectedFood.title}</h3>
             <div>
