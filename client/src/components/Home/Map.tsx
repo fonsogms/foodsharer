@@ -23,7 +23,12 @@ const Map = (props) => {
         {props.foodItems.map((food) => {
           return (
             <div>
-              <Marker longitude={food.longitude} latitude={food.latitude}>
+              <Marker
+                longitude={food.longitude}
+                latitude={food.latitude}
+                offsetTop={-50}
+                offsetLeft={-25}
+              >
                 <img
                   onClick={() => {
                     setSelectedFood({ ...food });
@@ -37,7 +42,12 @@ const Map = (props) => {
           );
         })}
 
-        <Marker longitude={userPos.longitude} latitude={userPos.latitude}>
+        <Marker
+          longitude={userPos.longitude}
+          latitude={userPos.latitude}
+          offsetTop={-50}
+          offsetLeft={-25}
+        >
           <img
             src="/external-content.duckduckgo.com.png"
             alt=""
