@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FoodDto } from "../foodDto.interface";
 import { Link } from "react-router-dom";
 import axios from "axios";
-interface FoodObject extends FoodDto {
+export interface FoodObject extends FoodDto {
   id: number;
 }
 const FoodDetails = (props) => {

@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 const Navbar = (props) => {
   const logout = async () => {
-    console.log(props);
-
     const body = await fetch(
       process.env.REACT_APP_DOMAIN + "/api/auth/logout",
       {
@@ -19,9 +17,16 @@ const Navbar = (props) => {
     <div>
       <nav>
         {props.token ? (
-          <Link to={"/login"} onClick={logout}>
-            Logout
-          </Link>
+          <>
+            <Link to={"/login"} onClick={logout}>
+              Logout
+            </Link>
+            <Link to={"/food/add"}>Add food</Link>
+            <Link to={"/profile"}> My Profile</Link>
+            <Link to="/profile/food">My food</Link>
+
+            <Link to="/home">Home</Link>
+          </>
         ) : (
           <>
             <Link to="/login">Login</Link>

@@ -16,13 +16,9 @@ const Login = (props) => {
     const { name, value } = e.target;
     setLoginDto({ ...loginDto, [name]: value });
   };
-  const signIn = async (
-    e: SyntheticEvent,
-    signIn: LoginDto
-  ): Promise<string | undefined> => {
+  const signIn = async (e: SyntheticEvent, signIn: LoginDto): Promise<void> => {
     e.preventDefault();
     try {
-      console.log("happening");
       const requestBody = await JSON.stringify(signIn);
       const body = await fetch(
         process.env.REACT_APP_DOMAIN + "/api/auth/signIn",
@@ -36,20 +32,22 @@ const Login = (props) => {
         }
       );
 
-      const { token } = await body.json();
-      if (token) {
-        props.setToken(token);
+      const data = await body.json();
+      if (data.token) {
+        props.setToken(data.token);
         props.history.push("/home");
+      } else {
+        console.log(data);
+        setErrorMessage([data.message]);
       }
       /*   const token: string = await axios.post(
         process.env.REACT_APP_DOMAIN + "/api/auth/signIn",
         signIn
       ); */
     } catch (error) {
-      console.log(error);
-      console.log(error.response.data);
+      console.log(error, "here");
+      console.log(error.response.data, "this is the error");
       setErrorMessage(error.response.data.message);
-      return error.response.data.message;
     }
   };
   return (
@@ -79,9 +77,10 @@ const Login = (props) => {
         </div>
       </form>
       <div>
+        {console.log(errorMessage)}
         {errorMessage[0] &&
-          errorMessage.map((elem) => {
-            return <h2>{elem}</h2>;
+          errorMessage.map((elem, index) => {
+            return <h2 key={index}>{elem}</h2>;
           })}
       </div>
     </div>

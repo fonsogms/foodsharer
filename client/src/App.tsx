@@ -8,6 +8,8 @@ import CreateFood from "./components/Food/FoodCreation/CreateFood";
 import FoodDetails from "./components/Food/foodDetails/FoodDetails";
 import FoodEdit from "./components/Food/editFood/FoodEdit";
 import Navbar from "./components/Navbar";
+import Profile from "./components/Profile/Profile";
+import ProfileFood from "./components/Profile/ProfileFood";
 function App(props) {
   const [token, setToken] = useState<string>(props.token);
 
@@ -24,6 +26,20 @@ function App(props) {
             );
           }}
         />
+        <Route
+          exact
+          path="/profile"
+          render={() => {
+            return <Profile {...props} token={token}></Profile>;
+          }}
+        ></Route>
+        <Route
+          exact
+          path="/profile/food"
+          render={() => {
+            return <ProfileFood {...props} token={token}></ProfileFood>;
+          }}
+        ></Route>
         <Route
           exact
           path="/login"
