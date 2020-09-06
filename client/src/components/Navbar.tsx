@@ -1,11 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
-const Navbar = () => {
+import axios from "axios";
+const Navbar = (props) => {
+  const logout = async () => {
+    console.log(props);
+
+    const body = await fetch(
+      process.env.REACT_APP_DOMAIN + "/api/auth/logout",
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
+
+    props.setToken("");
+  };
   return (
     <div>
       <nav>
-        <Link>Login</Link>
-        <Link>Signup</Link>
+        {props.token ? (
+          <Link to={"/login"} onClick={logout}>
+            Logout
+          </Link>
+        ) : (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/singup">Signup</Link>
+          </>
+        )}
       </nav>
     </div>
   );

@@ -13,7 +13,7 @@ function App(props) {
 
   return (
     <div className="App">
-      <Navbar></Navbar>
+      <Navbar token={token} setToken={setToken}></Navbar>
       <Switch>
         <Route
           exact
